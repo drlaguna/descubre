@@ -1,0 +1,15 @@
+Options +FollowSymLinks  
+RewriteEngine on
+
+#RewriteRule ^pagina/(.*)/(.*) /informatica/index.php?pagina=$1&version=$2 [R]
+#RewriteRule ^muestra/(.*)$ ./account/index.php?page=account&id=$1 [L,NC]
+
+//Prevent viewing of .htaccess file
+<Files .htaccess>
+order allow,deny
+deny from all
+</Files>
+
+//Prevent directory listings
+Options All -Indexes
+ 

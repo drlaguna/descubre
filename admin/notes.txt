@@ -1,0 +1,9 @@
+Cómo añadir un icono a las fuentes glyphicon
+1) Dibujar el icono en illustrator a tamaño 500x500
+2) Guardar como con formato .svg, SVG 1.0
+3) Acceder a https://icomoon.io/app/ y importar fuentes originales (fichero glyphicon-halflings-regular.svg)
+4) Añadir icono nuevo
+5) Exportar fuente configurando nombre: glyphicon, class prefix: glyphicon- y marcar en CSS-Selector: use a class
+6) Guardar en la carpeta fonts del servidor
+7) Incluir fichero glyphicon.css en el servidor y ligarlo desde header
+8) Modificar path de fuentes en glyphicon.css añadiendo ../ para que encuentre el fichero 
