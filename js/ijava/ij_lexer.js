@@ -4,24 +4,28 @@ function ij_word_t(line, type, text) {
   this.text = text;
 }
 
-function ij_start_char(chr) {
-  return ("_$ABCDEFGHIJKLMNOPQRSTUVWXYZ".indexOf(chr.toUpperCase()) >= 0);
-}
-
-function ij_name_char(chr) {
-  return ("_0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ".indexOf(chr.toUpperCase()) >= 0);
-}
-
-function ij_alnum_char(chr) {
-  return ("0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ".indexOf(chr.toUpperCase()) >= 0);
+function ij_alpha_char(chr) {
+  return ((chr >= "a" && chr <= "z") || (chr >= "A" && chr <= "Z"));
 }
 
 function ij_digit_char(chr) {
-  return ("0123456789".indexOf(chr) >= 0);
+  return (chr >= "0" && chr <= "9");
+}
+
+function ij_start_char(chr) {
+  return (chr === "_" || (chr >= "a" && chr <= "z") || (chr >= "A" && chr <= "Z"));
+}
+
+function ij_name_char(chr) {
+  return (chr === "_" || (chr >= "a" && chr <= "z") || (chr >= "A" && chr <= "Z") || (chr >= "0" && chr <= "9"));
+}
+
+function ij_alnum_char(chr) {
+  return ((chr >= "a" && chr <= "z") || (chr >= "A" && chr <= "Z") || (chr >= "0" && chr <= "9"));
 }
 
 function ij_space_char(chr) {
-  return (" \t\r\n".indexOf(chr) >= 0);
+  return (chr === " " || chr === "\t" || chr === "\n");
 }
 
 function ij_type_of(word) {
@@ -156,6 +160,8 @@ function ij_type_of(word) {
     } else if (word[index] !== "." && !ij_alnum_char(word[index])) {
       is_number = false;
     }
+    
+    if (!is_name && !is_number) return null;
   }
   
   if (is_name) return "(name)";
@@ -174,8 +180,11 @@ function ij_lexer(code) {
   let in_string = false;
   let line = 1;
   
+  let prev = null;
+  
   for (let i = 0; i < code.length; i++) {
     let chr = code[i];
+    let type = ij_type_of(word + chr);
     
     if (!in_string && i < code.length - 2) {
       if (chr === "/" && code[i + 1] === "/") {
@@ -191,17 +200,24 @@ function ij_lexer(code) {
       if (word.length === 0 && (chr === "\"" || chr === "'")) in_string = true;
       
       if (in_string) {
-        if (word.length >= 1 && ij_type_of(word + chr) !== null) in_string = false;
+        if (word.length >= 1 && type !== null) in_string = false;
+        
         word += chr;
+        prev = type;
       } else {
-        if (ij_type_of(word) !== null && ij_type_of(word + chr) === null) {
-          words.push(new ij_word_t(line, ij_type_of(word), word));
+        if (prev !== null && type === null) {
+          words.push(new ij_word_t(line, prev, word));
           word = "";
+          
+          type = ij_type_of(chr);
+          prev = null;
         }
         
         if (!ij_space_char(chr)) {
           if (chr === "\"" || chr === "'") in_string = true;
+          
           word += chr;
+          prev = type;
         }
       }
     }
@@ -218,8 +234,8 @@ function ij_lexer(code) {
     }
   }
   
-  if (ij_type_of(word) !== null) {
-    words.push(new ij_word_t(line, ij_type_of(word), word));
+  if (prev !== null) {
+    words.push(new ij_word_t(line, prev, word));
   }
   
   words.push(new ij_word_t(line, "(eof)", "(eof)"));
