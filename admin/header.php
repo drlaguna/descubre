@@ -6,20 +6,15 @@
 	<meta http-equiv="X-UA-Compatible" content="IE=edge">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 	<meta name="description" content=<?php echo '"'.$description.'"'; ?> />
-	<meta name="author" content="Facultad de Informática, Universidad de Murcia"  />
+	<meta name="author" content="Facultad de InformÃ¡tica, Universidad de Murcia"  />
 	<meta name="language" content="Spanish" />	
 <?php
 	if ( $ijava ) {
 ?>
-	<script src="js/ijava/iJavaLexer.js" type= "text/javascript"></script>    
-	<script src="js/ijava/iJavaParser.js" type= "text/javascript"></script>    
-	<script src="js/ijava/iJavaSemantic.js" type= "text/javascript"></script>    
-	<script src="js/ijava/iJava2Javascript.js" type= "text/javascript"></script>    
-	<script src="js/ijava/Environment.js" type= "text/javascript"></script>    
-	<script src="js/ijava/Datatype.js" type= "text/javascript"></script>    
-	<script src="js/ijava/OOSupport.js" type="text/javascript"></script>                
-	<script src="js/ijava/iJavaSandbox.js" type="text/javascript"></script>                
-	<script src="js/ijava/iJavaSandboxTest.js" type="text/javascript"></script>                
+	<script src="https://cdn.jsdelivr.net/npm/tone@14.7.77/build/Tone.js" type="text/javascript"></script>
+	<script src="js/ijava/ij_lexer.js" type="text/javascript"></script>
+	<script src="js/ijava/ij_parser.js" type="text/javascript"></script>
+	<script src="js/ijava/ij_funcs.js" type="text/javascript"></script>
 	<script src="js/ijava/iJavaCompiler.js" type="text/javascript"></script>                
 	<script src="js/ijava/iJavaEditor.js" type= "text/javascript"></script>    
 	<script src="js/ijava/iJavaViewer.js" type= "text/javascript"></script>    

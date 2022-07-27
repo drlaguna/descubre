@@ -27,7 +27,7 @@ function iJavaViewer(canvasId, outputTextareaId, errorDivId, gui, height) {
         if (error.line)
         {
             var line = document.createElement("a");
-            line.innerHTML = "Línea " + error.line + ": ";
+            line.innerHTML = "LÃ­nea " + error.line + ": ";
             addErrorEvent(line, error.line);
             par.appendChild(line);
         }
@@ -37,10 +37,16 @@ function iJavaViewer(canvasId, outputTextareaId, errorDivId, gui, height) {
 	 
 	var errorHandler = {
 		manage:
-		function(e) {
-			console.log(e.message);
-			addErrorLine(e);
-		},
+		function(error) {
+		      let e = error;
+		      
+		      if ("length" in e) {
+		        e = {line: error[0], message: error[1]};
+		      }
+		      
+		      console.log(e.message);
+		      addErrorLine(e);
+		    },
 		clear: 
 		function() {
 			if (compileroutput)	compileroutput.innerHTML = "";
@@ -88,10 +94,13 @@ function iJavaViewer(canvasId, outputTextareaId, errorDivId, gui, height) {
 		}
 	};
 	
-	compiler = new iJavaCompiler();
-	compiler.setOutputHandler(outputHandler);
-	compiler.setErrorHandler(errorHandler);
-	compiler.setControlHandler(controlHandler);
+	compiler = new iJavaCompiler(function() {
+	    gui.onProgramStopped();
+	    running = false;
+	  });
+	  
+	  compiler.setOutputHandler(outputHandler);
+	  compiler.setErrorHandler(errorHandler);
 		
 	this.hasErrors = function() { 
 	    return compiler.hasErrors(editor.getValue());
