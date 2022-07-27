@@ -7,7 +7,7 @@ function iJavaCompiler(on_stop) {
   
   this.parse = function(source) {
     try {
-      ij_lexer(source);
+      ij_parser(ij_lexer(source));
     } catch (error) {
       console.log(error);
       
